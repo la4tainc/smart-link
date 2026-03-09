@@ -70,6 +70,24 @@ async function initPage() {
   if (spotifyButton && cfg.spotifyUrl) {
     const spotifyUri = deriveSpotifyUri(cfg.spotifyUrl);
 
+    const fireViewContent = () => {
+      if (!window.fbq) return false;
+
+      const params = {
+        content_name: cfg.pageTitle || undefined,
+        content_category: 'music_release',
+        content_type: 'product'
+      };
+
+      if (cfg.facebookPixelId) {
+        window.fbq('trackSingle', cfg.facebookPixelId, 'ViewContent', params);
+      } else {
+        window.fbq('track', 'ViewContent', params);
+      }
+
+      return true;
+    };
+
     const redirectToSpotify = () => {
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
       if (isMobile && spotifyUri) {
@@ -88,16 +106,8 @@ async function initPage() {
     };
 
     const handleSpotifyClick = () => {
-      if (window.fbq) {
-        window.fbq('track', 'ViewContent', {
-          content_name: cfg.pageTitle || undefined,
-          content_category: 'music_release',
-          content_type: 'product',
-          artist_name: cfg.artistName || undefined,
-          destination: 'spotify'
-        });
-
-        setTimeout(redirectToSpotify, 250);
+      if (fireViewContent()) {
+        setTimeout(redirectToSpotify, 800);
         return;
       }
 
