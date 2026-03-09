@@ -70,15 +70,12 @@ async function initPage() {
   if (spotifyButton && cfg.spotifyUrl) {
     const spotifyUri = deriveSpotifyUri(cfg.spotifyUrl);
 
-    const handleSpotifyClick = () => {
-      // Try opening in Spotify app on mobile, fallback to web URL
+    const redirectToSpotify = () => {
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
       if (isMobile && spotifyUri) {
         const start = Date.now();
-        // Try deep link first
         window.location.href = spotifyUri;
 
-        // Fallback to https link shortly after
         setTimeout(() => {
           const elapsed = Date.now() - start;
           if (elapsed < 1500) {
@@ -88,6 +85,23 @@ async function initPage() {
       } else {
         window.location.href = cfg.spotifyUrl;
       }
+    };
+
+    const handleSpotifyClick = () => {
+      if (window.fbq) {
+        window.fbq('track', 'ViewContent', {
+          content_name: cfg.pageTitle || undefined,
+          content_category: 'music_release',
+          content_type: 'product',
+          artist_name: cfg.artistName || undefined,
+          destination: 'spotify'
+        });
+
+        setTimeout(redirectToSpotify, 250);
+        return;
+      }
+
+      redirectToSpotify();
     };
 
     // Attach handler only to the main play button
