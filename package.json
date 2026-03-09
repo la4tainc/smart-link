@@ -1,0 +1,15 @@
+{
+  "name": "music-smart-link",
+  "version": "1.0.0",
+  "description": "Simplified Feature.fm-style music smart link landing page with analytics and Facebook Pixel support.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0"
+  }
+}

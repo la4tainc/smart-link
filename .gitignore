@@ -1,0 +1,10 @@
+.DS_Store
+.venv/
+node_modules/
+events.json
+
+# Local editor / runtime noise
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
