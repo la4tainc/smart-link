@@ -89,6 +89,14 @@ async function initPage() {
 
     const handleSpotifyClick = () => {
       if (window.fbq) {
+        window.fbq('track', 'ViewContent', {
+          content_name: cfg.pageTitle || undefined,
+          content_category: 'music_release',
+          content_type: 'product',
+          artist_name: cfg.artistName || undefined,
+          destination: 'spotify'
+        });
+
         setTimeout(redirectToSpotify, 250);
         return;
       }
